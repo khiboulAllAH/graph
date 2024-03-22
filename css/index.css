@@ -1,0 +1,21 @@
+.content{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    background-image: url("../img/teck.avif");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+login-user{
+    width: 800px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+
+}
+login-user .singin{
+grid-culumn-start:2;
+grid-culumn-end:4;
+}
