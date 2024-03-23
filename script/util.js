@@ -17,3 +17,13 @@ export function CheckDataEmpty(data) {
   let values = Object.values(data)
   return values.every((val) => val != '')
 }
+
+export function customBtoa(input) {
+  const encoder=new TextEncoder();
+  const uint8Array=encoder.encode(input);
+  let binaryString="";
+  uint8Array.forEach(byte =>{
+    binaryString+=String.fromCharCode(byte);
+  })
+  return btoa(binaryString);
+}
