@@ -1,6 +1,7 @@
 import { login } from "./login.js";
 import { getDataFormulaire, CheckDataEmpty,customBtoa } from "./util.js";
 import { postData } from "./fetch.js";
+import { query } from "./query.js";
 customElements.define('login-user', login)
 const content = document.querySelector('.content')
 const logElement = document.createElement('login-user')
@@ -16,23 +17,6 @@ const main = () => {
             const error=shadow.getElementById('error-out')
             const data = getDataFormulaire(idForm);
             let auth=""
-            const query=`{
-                user {
-                firstName
-                lastName
-                email
-                campus
-                xp:transactions(where :{type:{_eq:"xp"}, eventId:{_eq:56}}){
-                amount
-                createdAt
-                }
-                grade:transactions(where :{type: {_eq:"level"},eventId:{_eq:56}}){
-                  path
-                  amount
-                }
-              }
-            }
-  `
             if (CheckDataEmpty(data)) {
                 const credentials=`Basic ${customBtoa(`${data.nickname_email}:${data.password}`)}`
                 postData('https://learn.zone01dakar.sn/api/auth/signin',"",credentials)
