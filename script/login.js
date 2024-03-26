@@ -1,23 +1,5 @@
 import { strToDom } from "./util.js";
-
-const signin = `<div class="signIn">
-<!-- <h2>Title</h2> -->
-<div class="title">
-    <h2>Log in to your Account</h2>
-</div>
-<form action="" method="post" id="form">
-    <input type="text" name="nickname_email" placeholder="Email" class="input" required>
-    <input type="password" name="password" placeholder="Password" class="input" required>
-    <div>
-        <input type="checkbox" class="remberYou"> 
-        <span class="textForRemember">Remember me </span>
-        <span class="forgetPassword">Forget Password?</span>
-    </div>
-    <h5 id="error-out"></h5>
-    <input type="submit" id="Login" value="Log In" class="input">
-</form>
-</div>`
-
+import { signin } from "./compenent.js";
 export class login extends HTMLElement {
     constructor() {
         super();
