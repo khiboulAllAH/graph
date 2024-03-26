@@ -12,6 +12,10 @@ export const query=`{
       path
       amount
     }
+  skills:transactions (where : {type : {_ilike:"skill_%"},object:{type:{_eq:"project"}}} order_by:[{type:desc},{amount:desc}] distinct_on :type){
+    type
+    amount
   }
+    }
 }
 `

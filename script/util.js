@@ -27,3 +27,21 @@ export function customBtoa(input) {
   })
   return btoa(binaryString);
 }
+
+export function calculData(data) {
+  let finalData={}
+  let xps=0
+  data.xp.forEach((x)=>{
+    xps+=parseInt(x.amount)
+  })
+  finalData.firstName=data.firstName
+  finalData.lastName=data.lastName
+  finalData.mail=data.email
+  finalData.campus=data.campus
+  finalData.grade=data.grade.length
+  finalData.projet=data.grade
+  finalData.xp =xps/1000
+  finalData.skills=data.skills
+
+  return finalData
+}
