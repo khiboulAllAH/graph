@@ -18,10 +18,21 @@ const main = () => {
             let auth=""
             const query=`{
                 user {
-                    name
-                    email
+                firstName
+                lastName
+                email
+                campus
+                xp:transactions(where :{type:{_eq:"xp"}, eventId:{_eq:56}}){
+                amount
+                createdAt
                 }
-            }`
+                grade:transactions(where :{type: {_eq:"level"},eventId:{_eq:56}}){
+                  path
+                  amount
+                }
+              }
+            }
+  `
             if (CheckDataEmpty(data)) {
                 const credentials=`Basic ${customBtoa(`${data.nickname_email}:${data.password}`)}`
                 postData('https://learn.zone01dakar.sn/api/auth/signin',"",credentials)
@@ -34,7 +45,7 @@ const main = () => {
                 })
                 .then(()=>{
                     const Bearer=`Bearer ${auth}`
-                    postData('https://learn.zone01dakar.sn/api/graphql-engine/v1/graphql',query,Bearer)
+                    postData('https://learn.zone01dakar.sn/api/graphql-engine/v1/graphql',{query},Bearer)
                     .then((resp)=>{
                         console.log(resp);
                     })

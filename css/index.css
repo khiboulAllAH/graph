@@ -6,16 +6,19 @@
     background-image: url("../img/teck.avif");
     background-repeat: no-repeat;
     background-size: cover;
+    overflow: hidden;
 }
 
 login-user{
-    width: 800px;
+    position: absolute;
+    /* width: 800px;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr; */
+    transform: translate(1%,95%);
 
 }
-login-user .singin{
+/* login-user .singin{
 grid-culumn-start:2;
 grid-culumn-end:4;
-}
+} */

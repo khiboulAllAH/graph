@@ -43,7 +43,7 @@ export class login extends HTMLElement {
               border-radius: 10px 0 0 10px;
               background-color: aliceblue;
               width: 400px;
-              height: 100%;
+            //   height: 100%;
               display: flex;
               flex-wrap: wrap;
               justify-content: center;
