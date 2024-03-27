@@ -196,6 +196,7 @@ cursor: pointer;
 height: 30px; 
 } 
 
+
 .nav-upper-options { 
 display: flex; 
 flex-direction: column; 
@@ -242,9 +243,12 @@ background-color: var(--one-use-color);
 background-color: var(--two-use-color); 
 } 
 
-.box img { 
+.box img,.campusSvg,.xpSvg { 
 height: 50px; 
 } 
+.campusSvg,.xpSvg{
+	width: 40px;
+}
 .box .text { 
 color: white; 
 } 
@@ -254,6 +258,11 @@ font-weight: 400;
 letter-spacing: 1px; 
 } 
 
+.topicml{
+	font-size: 11px; 
+font-weight: 400; 
+letter-spacing: 1px; 
+}
 .topic-heading { 
 font-size: 30px; 
 letter-spacing: 3px; 

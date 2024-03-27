@@ -40,7 +40,7 @@ export function calculData(data) {
   finalData.campus=data.campus
   finalData.grade=data.grade.length
   finalData.projet=data.grade
-  finalData.xp =xps/1000
+  finalData.xp =Math.round(xps/1000)
   finalData.skills=data.skills
 
   return finalData
