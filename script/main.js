@@ -1,7 +1,7 @@
 import { login } from "./login.js";
 import { strToDom } from "./util.js";
 import { layout } from "./compenent.js";
-import { mangerLogin, logique, log_out } from "./event.js";
+import { managerLogin, logique, log_out } from "./event.js";
 customElements.define('login-user', login)
 const content = document.querySelector('.content')
 const logElement = document.createElement('login-user')
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
             main.remove()
         }
         content.append(logElement)
-        mangerLogin(token)
+        managerLogin(token)
     } else {
         const login_user = document.querySelector('login-user')
         if (login_user) {

@@ -11,7 +11,7 @@ import { layout } from "./compenent.js";
 
 let finalData = {}
 
-export const mangerLogin = (token) => {
+export const managerLogin = (token) => {
     const login_user = document.querySelector('login-user')
 	const content = document.querySelector('.content')
 	const shadow = login_user.shadowRoot
@@ -73,7 +73,7 @@ export const log_out = (content,token) => {
 		main.remove()
 	}
 	content.append(document.createElement('login-user'))
-	mangerLogin(token)
+	managerLogin(token)
 }
 
 export const injectData = (data) => {
@@ -95,5 +95,19 @@ export const injectData = (data) => {
 	mail.textContent = `${data.mail}`
 	mail.style.wordBreak = "break-all";
 	xp.textContent = `${data.xp}`
+	graphProjects.addEventListener('click',()=>{
+		managerGraphProjects(data.projects,graphBoard)
+	})
 
+	graphSkills.addEventListener('click',()=>{
+		managerGraphSkills(data.skills,graphBoard)
+	})
+}
+
+const managerGraphProjects=(projects,board)=>{
+	board.textContent='graph Projects'
+}
+
+const managerGraphSkills=(skills,board)=>{
+	board.textContent='graph skills'
 }
