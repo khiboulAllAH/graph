@@ -143,7 +143,8 @@ const layout=`
         </div> 
 
         <div class="graph-board"> 
-        
+            <h1> Clicquer sur Skills ou Valid Projects</br>
+            Pour voir les graphs ulistrants</h1>
         </div> 
     </div> 
     </div> 
@@ -153,7 +154,7 @@ const layout=`
 const signin = `<div class="signIn">
 <!-- <h2>Title</h2> -->
 <div class="title">
-    <h2>Log in to your Account</h2>
+    <h2>Login to your Account</h2>
 </div>
 <form action="" method="post" id="form">
     <input type="text" name="nickname_email" placeholder="Email" class="input" required>

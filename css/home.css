@@ -277,14 +277,10 @@ border-radius: 30px;
 box-shadow: 3px 3px 10px rgb(188, 188, 188); 
 padding: 0px 20px 20px 20px; 
 } 
-.report-header { 
-height: 80px; 
-width: 100%; 
-display: flex; 
-align-items: center; 
-justify-content: space-between; 
-padding: 20px 20px 10px 20px; 
-border-bottom: 2px solid rgba(0, 20, 151, 0.59); 
-} 
 
+.graph-board h1{
+	display: flex;
+	color: var(--one-use-color);
+	justify-content: center;
+}
 
