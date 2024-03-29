@@ -104,15 +104,18 @@ export const injectData = (data) => {
 	})
 }
 
-const managerGraphProjects = (projects, board) => {
-	board.textContent = 'graph Projects'
+const managerGraphProjects = (projects) => {
+	// projects est le tableaux des projects
+	document.querySelector('.graph-board h1').textContent = `Pour calculer l'echelle `
+	document.querySelector('.graph-board h2').textContent =`echelle =Math.round(xp/500)`
 	let myData = [0, 0]
+	let projectNames=["",""]
 	projects.forEach(item => {
 		myData.push(Math.round(item.amount / 500))
+		projectNames.push(item.object.name)
 	});
-	console.log(myData);
-	let height = d3.max(myData);
-	let width = 550;
+	let height = 600;
+	let width = 600;
 	let barWidth = 15;
 	let barOffset = 5;
 	// Créez une échelle de couleurs
@@ -129,7 +132,7 @@ const managerGraphProjects = (projects, board) => {
 	let yAxis = d3.svg.axis()
 		.scale(yScale)
 		.orient('left')
-		.ticks(15);
+		.ticks(30);
 
 	// Ajoutez l'axe Y au SVG
 	d3.select('.graph-board').append('svg')
@@ -159,17 +162,16 @@ const managerGraphProjects = (projects, board) => {
 		.attr('y', function (d) {
 			return yScale(d);
 		})
-		.on('mouseover', function (d) {
+		.on('mouseover', function (d,i) {
 			let xPosition = parseFloat(d3.select(this).attr('x')) + barWidth / 2;
-			let yPosition = parseFloat(d3.select(this).attr('y')) + height - yScale(d);
-
+			let yPosition = parseFloat(d3.select(this).attr('y')) + height - yScale(d/2);
 			d3.select('.graph-board svg')
 				.append('text')
 				.attr('id', 'tooltip' + d)
 				.attr('x', xPosition)
 				.attr('y', yPosition)
 				.attr('text-anchor', 'middle')
-				.text(d);
+				.text(projectNames[i]);
 		})
 		.on('mouseout', function (d) {
 			d3.select('#tooltip' + d).remove();

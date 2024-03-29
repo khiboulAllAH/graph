@@ -16,7 +16,7 @@ export const query=`{
     type
     amount
   }
-  projects:transactions (where : {type : {_eq:"xp"},object:{type:{_eq:"project"}}} ){
+  projects:transactions (where : {type : {_eq:"xp"},object:{type:{_eq:"project"}}} order_by:{amount:asc}){
     amount
     object{
       name

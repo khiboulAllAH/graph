@@ -278,7 +278,7 @@ box-shadow: 3px 3px 10px rgb(188, 188, 188);
 padding: 0px 20px 20px 20px; 
 } 
 
-.graph-board h1{
+.graph-board h1,.graph-board h2{
 	display: flex;
 	color: var(--one-use-color);
 	justify-content: center;

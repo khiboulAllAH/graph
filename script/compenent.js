@@ -122,7 +122,7 @@ const layout=`
             <div class="box box3"> 
                 <div class="text"> 
                     <h2 class="topic-heading xp"></h2> 
-                    <h2 class="topic">xp</h2> 
+                    <h2 class="topic">kB</h2> 
                 </div> 
 
                 <img src= 
@@ -143,8 +143,8 @@ const layout=`
         </div> 
 
         <div class="graph-board"> 
-            <h1> Clicquer sur Skills ou Valid Projects</br>
-            Pour voir les graphs ulistrants</h1>
+            <h1> Clicquer sur Skills ou Valid Projects</h1>
+            <h2>Pour voir les graphs ulistrants</h2>
         </div> 
     </div> 
     </div> 
