@@ -10,6 +10,15 @@ import {
 import { layout } from "./compenent.js";
 
 let finalData = {}
+class Point{
+	constructor(x,y){
+		this.x=x
+		this.y=y
+	}
+	toSvgPath (){
+		return `${this.x} ${this.y}`
+	}
+}
 
 export const managerLogin = (token) => {
 	const login_user = document.querySelector('login-user')
@@ -180,4 +189,31 @@ const managerGraphProjects = (projects) => {
 
 const managerGraphSkills = (skills, board) => {
 	board.textContent = 'graph skills'
+	
+	const colors=['#679436','#bde0fe','#606c38','#dda15e','#ccd5ae',"#264653","#2a9d8f","#e9c46a",'#f4a261',"#e76f51","#023047",'#fb8500',"#9a8c98",'#ee9b00','#001219,','#ae2012','#9b2226','#370617','#b5179e','#a47148','#99d98c',"#ccff33",'#613a3a']
+	const svg=strToDom(`<svg viewBox="-1 -1 4 4" style="width: 500px; height: 500px; "></svg>`)
+	board.appendChild(svg)
+	let skillNames=[]
+	let skillParts=[]
+	const svgICreate=document.querySelector('.graph-board svg')
+	const paths=skills.map((skill,k)=>{
+		const color = colors[k%(colors.length-1)]
+		const path=document.createElementNS('http://www.w3.org/2000/svg','path')
+		path.setAttribute('fill',color)
+		svgICreate.appendChild(path)
+		skillNames.push(skill.type)
+		skillParts.push(skill.amount)
+		return path
+	})
+	// console.log(skillNames,"\n",skillParts);
+	draw(skillParts,paths)
+}
+
+function draw(skillParts,paths) {
+	const total = skillParts.reduce((acc,v) => acc+v,0)
+	let angle=0
+	let start=new Point(1,0)
+	let ratio = skillParts[0]/total
+	paths[0].setAttribute('d',`M 0 0 L ${start.toSvgPath()}`)
+	console.log(total)
 }
