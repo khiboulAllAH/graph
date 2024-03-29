@@ -18,6 +18,10 @@ class Point{
 	toSvgPath (){
 		return `${this.x} ${this.y}`
 	}
+
+	static fromAngle(angle){
+		return new Point(Math.cos(angle), Math.sin(angle));
+	}
 }
 
 export const managerLogin = (token) => {
@@ -93,7 +97,7 @@ export const injectData = (data) => {
 	const zone = document.querySelector('.zone')
 	const mail = document.querySelector('.mail')
 	const xp = document.querySelector('.xp')
-	const graphBoard = document.querySelector('.graph-board')
+	const graphBoard = document.querySelector('.boardSkills')
 	const graphSkills = document.querySelector(".option2")
 	const graphProjects = document.querySelector(".option3")
 	name.textContent = `${data.firstName} ${data.lastName}`
@@ -105,18 +109,27 @@ export const injectData = (data) => {
 	mail.style.wordBreak = "break-all";
 	xp.textContent = `${data.xp}`
 	graphProjects.addEventListener('click', () => {
-		managerGraphProjects(data.projet, graphBoard)
+		const skill=document.querySelector('.boardSkills')
+		const projet=document.querySelector('.boardProject')
+		skill.style.display="none"
+		projet.style.display="flex"
+		skill.innerHTML=''
+		projet.innerHTML=''
+		managerGraphProjects(data.projet)
 	})
-
 	graphSkills.addEventListener('click', () => {
+		const skill=document.querySelector('.boardSkills')
+		const projet=document.querySelector('.boardProject')
+		skill.style.display="flex"
+		projet.style.display="none"
+		skill.innerHTML=''
+		projet.innerHTML=''
 		managerGraphSkills(data.skills, graphBoard)
 	})
 }
 
 const managerGraphProjects = (projects) => {
 	// projects est le tableaux des projects
-	document.querySelector('.graph-board h1').textContent = `Pour calculer l'echelle `
-	document.querySelector('.graph-board h2').textContent =`echelle =Math.round(xp/500)`
 	let myData = [0, 0]
 	let projectNames=["",""]
 	projects.forEach(item => {
@@ -124,7 +137,7 @@ const managerGraphProjects = (projects) => {
 		projectNames.push(item.object.name)
 	});
 	let height = 600;
-	let width = 600;
+	let width = 580;
 	let barWidth = 15;
 	let barOffset = 5;
 	// Créez une échelle de couleurs
@@ -144,7 +157,7 @@ const managerGraphProjects = (projects) => {
 		.ticks(30);
 
 	// Ajoutez l'axe Y au SVG
-	d3.select('.graph-board').append('svg')
+	d3.select('.boardProject').append('svg')
 		.attr('width', width)
 		.attr('height', height)
 		.style('background', '#dff0d8')
@@ -154,7 +167,7 @@ const managerGraphProjects = (projects) => {
 		.call(yAxis);
 
 	// Sélectionnez et créez les barres
-	d3.select('.graph-board svg')
+	d3.select('.boardProject svg')
 		.selectAll('rect')
 		.data(myData)
 		.enter().append('rect')
@@ -174,7 +187,7 @@ const managerGraphProjects = (projects) => {
 		.on('mouseover', function (d,i) {
 			let xPosition = parseFloat(d3.select(this).attr('x')) + barWidth / 2;
 			let yPosition = parseFloat(d3.select(this).attr('y')) + height - yScale(d/2);
-			d3.select('.graph-board svg')
+			d3.select('.boardProject svg')
 				.append('text')
 				.attr('id', 'tooltip' + d)
 				.attr('x', xPosition)
@@ -188,14 +201,22 @@ const managerGraphProjects = (projects) => {
 }
 
 const managerGraphSkills = (skills, board) => {
-	board.textContent = 'graph skills'
+	// board.textContent = 'graph skills'
 	
 	const colors=['#679436','#bde0fe','#606c38','#dda15e','#ccd5ae',"#264653","#2a9d8f","#e9c46a",'#f4a261',"#e76f51","#023047",'#fb8500',"#9a8c98",'#ee9b00','#001219,','#ae2012','#9b2226','#370617','#b5179e','#a47148','#99d98c',"#ccff33",'#613a3a']
-	const svg=strToDom(`<svg viewBox="-1 -1 4 4" style="width: 500px; height: 500px; "></svg>`)
-	board.appendChild(svg)
+	const svg=strToDom(`<svg viewBox="-1 -1 2 2" style="width: 500px; height: 500px;" class="svgSkills">
+						<g mask="url(#graphMask)">
+						</g>
+						<mask id="graphMask">
+						<rect fill="white" x="-1" y="-1" width="2" height="2"/>
+						<circle r="0.2" fill="black"/>
+						</mask>
+						</svg>`)
+	board.appendChild(svg.firstChild)
 	let skillNames=[]
 	let skillParts=[]
-	const svgICreate=document.querySelector('.graph-board svg')
+	const svgICreate=document.querySelector('.svgSkills')
+	console.log(svgICreate);
 	const paths=skills.map((skill,k)=>{
 		const color = colors[k%(colors.length-1)]
 		const path=document.createElementNS('http://www.w3.org/2000/svg','path')
@@ -205,6 +226,15 @@ const managerGraphSkills = (skills, board) => {
 		skillParts.push(skill.amount)
 		return path
 	})
+	//  c'est pour les masks
+	// const lines=skills.map((skill,k)=>{
+	// 	const line=document.createElementNS('http://www.w3.org/2000/svg','line')
+	// 	line.setAttribute('stock',"#000")
+	// 	line.setAttribute('stock-width',"0.01")
+	// 	line.appendChild(line)
+		
+	// 	return line
+	// })
 	// console.log(skillNames,"\n",skillParts);
 	draw(skillParts,paths)
 }
@@ -213,7 +243,13 @@ function draw(skillParts,paths) {
 	const total = skillParts.reduce((acc,v) => acc+v,0)
 	let angle=0
 	let start=new Point(1,0)
-	let ratio = skillParts[0]/total
-	paths[0].setAttribute('d',`M 0 0 L ${start.toSvgPath()}`)
-	console.log(total)
+	for (let i = 0; i < skillParts.length; i++) {
+		const ratio=skillParts[i]/total
+		angle+= (ratio)*2*Math.PI
+		const end =Point.fromAngle(angle)
+		const largeFlag= ratio >.5? '1': '0'
+		paths[i].setAttribute('d',`M 0 0 L ${start.toSvgPath()} A 1 1 0 ${largeFlag} 1 ${end.toSvgPath()}`)
+		// console.log(total)
+		start=end
+	}
 }

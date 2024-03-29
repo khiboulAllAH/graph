@@ -1,4 +1,4 @@
-const layout=`
+const layout = `
 <div class="main">
     <header> 
         <div class="logosec"> 
@@ -142,10 +142,14 @@ const layout=`
             </div> 
         </div> 
 
-        <div class="graph-board"> 
-            <h1> Clicquer sur Skills ou Valid Projects</h1>
-            <h2>Pour voir les graphs ulistrants</h2>
-        </div> 
+         <div class="graph"> 
+            <div class="boardSkills">
+            skills
+            </div>    
+            <div class="boardProject">
+            project
+            </div>
+         </div> 
     </div> 
     </div> 
 </div> 
@@ -169,4 +173,4 @@ const signin = `<div class="signIn">
 </form>
 </div>`
 
-export {layout, signin}
+export { layout, signin }
