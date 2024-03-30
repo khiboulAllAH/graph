@@ -10,16 +10,16 @@ import {
 import { layout } from "./compenent.js";
 
 let finalData = {}
-class Point{
-	constructor(x,y){
-		this.x=x
-		this.y=y
+class Point {
+	constructor(x, y) {
+		this.x = x
+		this.y = y
 	}
-	toSvgPath (){
+	toSvgPath() {
 		return `${this.x} ${this.y}`
 	}
 
-	static fromAngle(angle){
+	static fromAngle(angle) {
 		return new Point(Math.cos(angle), Math.sin(angle));
 	}
 }
@@ -70,7 +70,6 @@ export function logique(token) {
 			}
 		})
 		.then(() => {
-			console.log(finalData);
 			injectData(finalData)
 		})
 		.catch((error) => {
@@ -86,7 +85,7 @@ export const log_out = (content, token) => {
 		main.remove()
 	}
 	content.append(document.createElement('login-user'))
-	managerLogin(token)
+	managerLogin(token,svg)
 }
 
 export const injectData = (data) => {
@@ -109,34 +108,35 @@ export const injectData = (data) => {
 	mail.style.wordBreak = "break-all";
 	xp.textContent = `${data.xp}`
 	graphProjects.addEventListener('click', () => {
-		const skill=document.querySelector('.boardSkills')
-		const projet=document.querySelector('.boardProject')
-		skill.style.display="none"
-		projet.style.display="flex"
-		skill.innerHTML=''
-		projet.innerHTML=''
+		const skill = document.querySelector('.boardSkills')
+		const projet = document.querySelector('.boardProject')
+		skill.style.display = "none"
+		projet.style.display = "flex"
+		skill.innerHTML = ''
+		projet.innerHTML = ''
 		managerGraphProjects(data.projet)
 	})
 	graphSkills.addEventListener('click', () => {
-		const skill=document.querySelector('.boardSkills')
-		const projet=document.querySelector('.boardProject')
-		skill.style.display="flex"
-		projet.style.display="none"
-		skill.innerHTML=''
-		projet.innerHTML=''
+		const skill = document.querySelector('.boardSkills')
+		const projet = document.querySelector('.boardProject')
+		skill.style.display = "flex"
+		projet.style.display = "none"
+		skill.innerHTML = ''
+		projet.innerHTML = ''
 		managerGraphSkills(data.skills, graphBoard)
 	})
 }
 
 const managerGraphProjects = (projects) => {
 	// projects est le tableaux des projects
+	document.querySelector('.boardProject').appendChild(strToDom(`<h1">Graph's  Valid Projects<h1/>`))
 	let myData = [0, 0]
-	let projectNames=["",""]
+	let projectNames = ["", ""]
 	projects.forEach(item => {
 		myData.push(Math.round(item.amount / 500))
 		projectNames.push(item.object.name)
 	});
-	let height = 600;
+	let height = d3.max(myData) * 1.5;
 	let width = 580;
 	let barWidth = 15;
 	let barOffset = 5;
@@ -184,9 +184,9 @@ const managerGraphProjects = (projects) => {
 		.attr('y', function (d) {
 			return yScale(d);
 		})
-		.on('mouseover', function (d,i) {
+		.on('mouseover', function (d, i) {
 			let xPosition = parseFloat(d3.select(this).attr('x')) + barWidth / 2;
-			let yPosition = parseFloat(d3.select(this).attr('y')) + height - yScale(d/2);
+			let yPosition = parseFloat(d3.select(this).attr('y')) + height - yScale(d / 2);
 			d3.select('.boardProject svg')
 				.append('text')
 				.attr('id', 'tooltip' + d)
@@ -201,55 +201,99 @@ const managerGraphProjects = (projects) => {
 }
 
 const managerGraphSkills = (skills, board) => {
-	// board.textContent = 'graph skills'
-	
-	const colors=['#679436','#bde0fe','#606c38','#dda15e','#ccd5ae',"#264653","#2a9d8f","#e9c46a",'#f4a261',"#e76f51","#023047",'#fb8500',"#9a8c98",'#ee9b00','#001219,','#ae2012','#9b2226','#370617','#b5179e','#a47148','#99d98c',"#ccff33",'#613a3a']
-	const svg=strToDom(`<svg viewBox="-1 -1 2 2" style="width: 500px; height: 500px;" class="svgSkills">
+	board.appendChild(strToDom(`<h1">Graph's  Skills<h1/>`))
+	const colors = ['#679436', '#bde0fe', '#606c38', '#dda15e', '#ccd5ae', "#264653", "#2a9d8f", "#e9c46a", '#f4a261', "#e76f51", "#023047", '#fb8500', "#9a8c98", '#ee9b00', '#001219,', '#ae2012', '#9b2226', '#370617', '#b5179e', '#a47148', '#99d98c', "#ccff33", '#613a3a']
+	const svg = strToDom(`<svg viewBox="-1 -1 2 2" style="width: 500px; height: 500px;" class="svgSkills">
 						<g mask="url(#graphMask)">
 						</g>
 						<mask id="graphMask">
-						<rect fill="white" x="-1" y="-1" width="2" height="2"/>
-						<circle r="0.2" fill="black"/>
+							<rect fill="white" x="-1" y="-1" width="2" height="2"/>
+							<circle r="0.03" fill="black"/>
 						</mask>
 						</svg>`)
 	board.appendChild(svg.firstChild)
-	let skillNames=[]
-	let skillParts=[]
-	const svgICreate=document.querySelector('.svgSkills')
-	console.log(svgICreate);
-	const paths=skills.map((skill,k)=>{
-		const color = colors[k%(colors.length-1)]
-		const path=document.createElementNS('http://www.w3.org/2000/svg','path')
-		path.setAttribute('fill',color)
-		svgICreate.appendChild(path)
+	let skillNames = []
+	let skillParts = []
+	// const svgICreate=document.querySelector('.svgSkills')
+	const pathGroup = document.querySelector('svg g')
+	const maskGroup = document.querySelector('svg mask')
+	// c'est pour partionner le cercle
+	const paths = skills.map((skill, k) => {
+		const color = colors[k % (colors.length - 1)]
+		const path = document.createElementNS('http://www.w3.org/2000/svg', 'path')
+		path.setAttribute('fill', color)
+		pathGroup.appendChild(path)
 		skillNames.push(skill.type)
 		skillParts.push(skill.amount)
+		// start pour faire les labels
+		path.classList.add(skill.type)
+		path.setAttribute('data',skill.amount)
+		path.setAttribute('color',color)
+		// end
 		return path
 	})
-	//  c'est pour les masks
-	// const lines=skills.map((skill,k)=>{
-	// 	const line=document.createElementNS('http://www.w3.org/2000/svg','line')
-	// 	line.setAttribute('stock',"#000")
-	// 	line.setAttribute('stock-width',"0.01")
-	// 	line.appendChild(line)
-		
-	// 	return line
+	//  c'est pour les masks c'est à dire la séparation entre les partion de couleur et du centre
+	const lines = skills.map(() => {
+		const line = document.createElementNS('http://www.w3.org/2000/svg', 'line')
+		line.setAttribute('stroke', "#000")
+		line.setAttribute('stroke-width', "0.01")
+		line.setAttribute('x1', '0')
+		line.setAttribute('y1', '0')
+		maskGroup.appendChild(line)
+		return line
+	})
+	// c'est pour faire des labels pour la survol de chaque partition du cercle
+	// const labels = skillNames.map((name) => {
+	// 	const skill = document.querySelector('.boardSkills')
+	// 	const labelName = document.createElement('div')
+	// 	labelName.innerText = name
+	// 	labelName.classList.add('label')
+	// 	skill.appendChild(labelName)
+	// 	return labelName
 	// })
-	// console.log(skillNames,"\n",skillParts);
-	draw(skillParts,paths)
+
+	draw(skillParts, paths, lines)
+	board.appendChild(strToDom(`<h1 class="nameLabel"><h1/>`))
+	overSkills()
 }
 
-function draw(skillParts,paths) {
-	const total = skillParts.reduce((acc,v) => acc+v,0)
-	let angle=0
-	let start=new Point(1,0)
+function draw(skillParts, paths, lines) {
+	const total = skillParts.reduce((acc, v) => acc + v, 0)
+	let angle = 0
+	let start = new Point(1, 0)
 	for (let i = 0; i < skillParts.length; i++) {
-		const ratio=skillParts[i]/total
-		angle+= (ratio)*2*Math.PI
-		const end =Point.fromAngle(angle)
-		const largeFlag= ratio >.5? '1': '0'
-		paths[i].setAttribute('d',`M 0 0 L ${start.toSvgPath()} A 1 1 0 ${largeFlag} 1 ${end.toSvgPath()}`)
+		const ratio = skillParts[i] / total
+		// positionLabel(labels[i], angle + ratio * Math.PI)
+		angle += (ratio) * 2 * Math.PI
+		const end = Point.fromAngle(angle)
+		const largeFlag = ratio > .5 ? '1' : '0'
+		paths[i].setAttribute('d', `M 0 0 L ${start.toSvgPath()} A 1 1 0 ${largeFlag} 1 ${end.toSvgPath()}`)
 		// console.log(total)
-		start=end
+		lines[i].setAttribute('x2', end.x)
+		lines[i].setAttribute('y2', end.y)
+		start = end
 	}
+}
+
+// function positionLabel(label, angle) {
+// 	if (!label || !angle) {
+// 		return
+// 	}
+// 	const point = Point.fromAngle(angle)
+// 	label.style.setProperty('top', `${(point.y * 0.5 + 0.5) * 100}%`)
+// 	label.style.setProperty('left', `${(point.x * 0.5 + 0.5) * 100}%`)
+// }
+
+function overSkills(svg) {
+	document.addEventListener('mouseover',(e)=>{
+		e.preventDefault()
+		const element=e.target
+		const label=element.classList
+		if (label.value.includes('skill_')) {
+			const nameLabel=document.querySelector('.nameLabel')
+			nameLabel.innerHTML=`${label.value.split('_')[1]} <br/> ${element.getAttribute('data')}%`
+			nameLabel.style.color=element.getAttribute('color')
+		}
+		
+	})
 }
