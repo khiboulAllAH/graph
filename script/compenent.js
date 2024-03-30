@@ -126,7 +126,7 @@ const layout = `
                 </div> 
 
                 <img src= 
-    "../img/xp.svg"
+                    "../img/xp.svg"
                     alt="comments"> 
             </div> 
 
@@ -140,6 +140,19 @@ const layout = `
                 "../img/project.svg" 
                 alt="projects"> 
             </div> 
+
+            <div class="box box5"> 
+            <div class="text"> 
+                <h2 class="topic-heading ratio"></h2>
+                <h2 class="topic up"></h2> 
+                <h2 class="topic down"></h2> 
+                <h2 class="topic">Audits</h2> 
+            </div> 
+
+            <img src= 
+            "../img/audits.svg" 
+            alt="projects"> 
+        </div> 
         </div> 
 
          <div class="graph"> 

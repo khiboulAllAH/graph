@@ -1,9 +1,12 @@
-export const query=`{
+export const query = `{
     user {
     firstName
     lastName
     email
     campus
+    auditRatio
+    totalUp
+    totalDown
     xp:transactions(where :{type:{_eq:"xp"}, eventId:{_eq:56}}){
     amount
     createdAt

@@ -107,6 +107,7 @@ export const injectData = (data) => {
 	mail.textContent = `${data.mail}`
 	mail.style.wordBreak = "break-all";
 	xp.textContent = `${data.xp}`
+	maneAudits(data.ratio,data.up,data.down)
 	graphProjects.addEventListener('click', () => {
 		const skill = document.querySelector('.boardSkills')
 		const projet = document.querySelector('.boardProject')
@@ -127,6 +128,34 @@ export const injectData = (data) => {
 	})
 }
 
+function maneAudits(ratio,up,down) {
+	const forRatio=document.querySelector('.ratio')
+	const forUp=document.querySelector('.up')
+	const forDown=document.querySelector('.down')
+	forRatio.textContent='ratio:'+ratio.toFixed(1)
+	forUp.textContent='Done: '+conversion(up)
+	forDown.textContent='Recever: '+conversion(down)
+}
+
+function conversion(data) {
+	let left=""
+	if (data>1000) {
+		left=(data/1000)
+		if (left>1000) {
+			left/=1000
+			if (left>1000) {
+				left/=1000
+			}else{
+				left=parseFloat(left).toFixed(2) +'MB'
+			}
+		}else{
+			left=parseFloat(left).toFixed(2) +'kB'
+		}
+	}else{
+		left=data+ ' B'
+	}
+	return left
+}
 const managerGraphProjects = (projects) => {
 	// projects est le tableaux des projects
 	document.querySelector('.boardProject').appendChild(strToDom(`<h1">Graph's  Valid Projects<h1/>`))

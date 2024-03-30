@@ -38,10 +38,13 @@ export function calculData(data) {
   finalData.lastName=data.lastName
   finalData.mail=data.email
   finalData.campus=data.campus
+  finalData.up=data.totalUp
+  finalData.down=data.totalDown
+  finalData.ratio=data.auditRatio
   finalData.grade=data.grade.length
   finalData.projet=data.projects
   finalData.xp =Math.round(xps/1000)
   finalData.skills=data.skills
-
+console.log(finalData);
   return finalData
 }

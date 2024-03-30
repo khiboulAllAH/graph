@@ -264,6 +264,9 @@ header {
 .box:nth-child(4) {
 	background-color: var(--two-use-color);
 }
+.box:nth-child(5) {
+	background-color: var(--two-use-color);
+}
 
 .box img,
 .campusSvg,
@@ -327,6 +330,9 @@ header {
 	border: #0c007d;
 }
 
+.error-out{
+	color: red;
+}
 /* .label{
 	position: absolute;
 	top: 0;
