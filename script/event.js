@@ -85,7 +85,7 @@ export const log_out = (content, token) => {
 		main.remove()
 	}
 	content.append(document.createElement('login-user'))
-	managerLogin(token,svg)
+	managerLogin(token, svg)
 }
 
 export const injectData = (data) => {
@@ -107,7 +107,7 @@ export const injectData = (data) => {
 	mail.textContent = `${data.mail}`
 	mail.style.wordBreak = "break-all";
 	xp.textContent = `${data.xp}`
-	maneAudits(data.ratio,data.up,data.down)
+	maneAudits(data.ratio, data.up, data.down)
 	graphProjects.addEventListener('click', () => {
 		const skill = document.querySelector('.boardSkills')
 		const projet = document.querySelector('.boardProject')
@@ -128,31 +128,31 @@ export const injectData = (data) => {
 	})
 }
 
-function maneAudits(ratio,up,down) {
-	const forRatio=document.querySelector('.ratio')
-	const forUp=document.querySelector('.up')
-	const forDown=document.querySelector('.down')
-	forRatio.textContent='ratio:'+ratio.toFixed(1)
-	forUp.textContent='Done: '+conversion(up)
-	forDown.textContent='Recever: '+conversion(down)
+function maneAudits(ratio, up, down) {
+	const forRatio = document.querySelector('.ratio')
+	const forUp = document.querySelector('.up')
+	const forDown = document.querySelector('.down')
+	forRatio.textContent = 'ratio:' + ratio.toFixed(1)
+	forUp.textContent = 'Done: ' + conversion(up)
+	forDown.textContent = 'Recever: ' + conversion(down)
 }
 
 function conversion(data) {
-	let left=""
-	if (data>1000) {
-		left=(data/1000)
-		if (left>1000) {
-			left/=1000
-			if (left>1000) {
-				left/=1000
-			}else{
-				left=parseFloat(left).toFixed(2) +'MB'
+	let left = ""
+	if (data > 1000) {
+		left = (data / 1000)
+		if (left > 1000) {
+			left /= 1000
+			if (left > 1000) {
+				left /= 1000
+			} else {
+				left = parseFloat(left).toFixed(2) + 'MB'
 			}
-		}else{
-			left=parseFloat(left).toFixed(2) +'kB'
+		} else {
+			left = parseFloat(left).toFixed(2) + 'kB'
 		}
-	}else{
-		left=data+ ' B'
+	} else {
+		left = data + ' B'
 	}
 	return left
 }
@@ -162,10 +162,10 @@ const managerGraphProjects = (projects) => {
 	let myData = [0, 0]
 	let projectNames = ["", ""]
 	projects.forEach(item => {
-		myData.push(Math.round(item.amount / 500))
+		myData.push(Math.round(item.amount / 1000))
 		projectNames.push(item.object.name)
 	});
-	let height = d3.max(myData) * 1.5;
+	let height = d3.max(myData)*2;
 	let width = 580;
 	let barWidth = 15;
 	let barOffset = 5;
@@ -178,15 +178,14 @@ const managerGraphProjects = (projects) => {
 	let yScale = d3.scale.linear()
 		.domain([0, d3.max(myData)])
 		.range([height, 0]);
-
-	// Créez l'axe Y
-	let yAxis = d3.svg.axis()
+		// Créez l'axe Y
+		let yAxis = d3.svg.axis()
 		.scale(yScale)
 		.orient('left')
-		.ticks(30);
-
-	// Ajoutez l'axe Y au SVG
-	d3.select('.boardProject').append('svg')
+		.ticks(25);
+		
+		// Ajoutez l'axe Y au SVG
+		d3.select('.boardProject').append('svg')
 		.attr('width', width)
 		.attr('height', height)
 		.style('background', '#dff0d8')
@@ -194,9 +193,9 @@ const managerGraphProjects = (projects) => {
 		// .attr('class', 'y axis')
 		.attr('transform', 'translate(37,0)')
 		.call(yAxis);
-
-	// Sélectionnez et créez les barres
-	d3.select('.boardProject svg')
+		document.querySelector('.boardProject').append(strToDom('<h2></h2>'))
+		// Sélectionnez et créez les barres
+		d3.select('.boardProject svg')
 		.selectAll('rect')
 		.data(myData)
 		.enter().append('rect')
@@ -223,9 +222,12 @@ const managerGraphProjects = (projects) => {
 				.attr('y', yPosition)
 				.attr('text-anchor', 'middle')
 				.text(projectNames[i]);
+				document.querySelector('.boardProject h2').textContent=(projects[i-2].amount/1000).toFixed(2) +' kB'
 		})
+		
 		.on('mouseout', function (d) {
 			d3.select('#tooltip' + d).remove();
+			document.querySelector('.boardProject h2').textContent=''
 		});
 }
 
@@ -256,8 +258,8 @@ const managerGraphSkills = (skills, board) => {
 		skillParts.push(skill.amount)
 		// start pour faire les labels
 		path.classList.add(skill.type)
-		path.setAttribute('data',skill.amount)
-		path.setAttribute('color',color)
+		path.setAttribute('data', skill.amount)
+		path.setAttribute('color', color)
 		// end
 		return path
 	})
@@ -314,15 +316,15 @@ function draw(skillParts, paths, lines) {
 // }
 
 function overSkills(svg) {
-	document.addEventListener('mouseover',(e)=>{
+	document.addEventListener('mouseover', (e) => {
 		e.preventDefault()
-		const element=e.target
-		const label=element.classList
+		const element = e.target
+		const label = element.classList
 		if (label.value.includes('skill_')) {
-			const nameLabel=document.querySelector('.nameLabel')
-			nameLabel.innerHTML=`${label.value.split('_')[1]} <br/> ${element.getAttribute('data')}%`
-			nameLabel.style.color=element.getAttribute('color')
+			const nameLabel = document.querySelector('.nameLabel')
+			nameLabel.innerHTML = `${label.value.split('_')[1]} <br/> ${element.getAttribute('data')}%`
+			nameLabel.style.color = element.getAttribute('color')
 		}
-		
+
 	})
 }
