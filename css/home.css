@@ -308,9 +308,9 @@ header {
 	min-height: 300px;
 	max-width: 1200px;
 	margin: 70px auto 0px auto;
-	background-color: #ffffff;
+	background-color: var(--two-use-color);
 	border-radius: 30px;
-	box-shadow: 3px 3px 10px rgb(188, 188, 188);
+	box-shadow: 3px 3px 10px var(--one-use-color);
 	padding: 0px 20px 20px 20px;
 }
 
